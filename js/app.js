@@ -3,12 +3,11 @@
 
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
-    var x = randomPostion(-100, 0);
-    var y = randomPostion(50, 250);
-    var speed = randomPostion(1, 100);
+    var firstY = [220, 140, 60];
+    var speeds = [50, 70, 100, 120, 150];
     this.x = -100; // Variables applied to each of our instances go here,
-    this.y = 0; // we've provided one for you to get started
-    this.speed = speed;
+    this.y = firstY[Math.floor(Math.random() * 3)]; // we've provided one for you to get started
+    this.speed = speeds[Math.floor(Math.random() * 5)];
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -17,19 +16,19 @@ var Enemy = function(x, y, speed) {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-        this.x = this.x + this.speed * dt;
+    this.x = this.x + this.speed * dt;
 
-        if (this.x > 500) {
-            this.reset();
-        }
+    if (this.x > 500) {
+        this.x = 0;
+    }
+    //this.checkCollisions();
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
 };
 
 Enemy.prototype.reset = function() {
-    var x = randomPostion(-100, 0);
-    var y = randomPostion(50, 250);
+
     this.x = x;
     this.y = y;
 };
@@ -39,12 +38,10 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+Enemy.prototype.checkCollisions = function() {
 
+};
 
-// Now instantiate your objects.
 
 
 var Player = function(x, y) {
@@ -104,7 +101,7 @@ Player.prototype.handleInput = function(key) {
 };
 
 // Place all enemy objects in an array called allEnemies
-var allEnemies = [];
+var allEnemies = [new Enemy(),new Enemy(), new Enemy()];
 
 
 // Place the player object in a variable called player
