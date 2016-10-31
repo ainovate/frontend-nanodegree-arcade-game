@@ -3,10 +3,14 @@
 
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
-    
+
+
+    var firstY = [220, 140, 60];
+    var speeds = [50, 70, 100, 120, 150];
+
     this.x = -100; // Variables applied to each of our instances go here,
-    this.y = 0; // we've provided one for you to get started
-    this.speed = speed;
+    this.y = firstY[Math.floor(Math.random() * 3)]; // we've provided one for you to get started
+    this.speed = speeds[Math.floor(Math.random() * 5)];
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -18,27 +22,19 @@ Enemy.prototype.update = function(dt) {
     this.x = this.x + this.speed * dt;
 
     if (this.x > 500) {
-        this.reset();
+        this.x = 0;
     }
-    var bugXLeftRange = this.x - 50;
-    var bugXRightRange = this.x + 50;
-    var bugYTopRange = this.y - 50;
-    var bugYBottomRange = this.y + 50;
+    //this.checkCollisions();
 
-    if (player.x > bugXLeftRange && player.x < bugXRightRange && player.y > bugYTopRange && player.y < bugYBottomRange) {
-        player.resetPlayerPosition();
-    }
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
+ 
 };
 
 Enemy.prototype.reset = function() {
-    this.col = -2;
-    this.row = getRandomIntInclusive(1, 3);
-    this.x = x * this.col;
-    this.y = y * this.row;
-    this.speed = getRandomIntInclusive(1, 6);
+
+
+    this.x = x;
+    this.y = y;
+
 };
 
 // Draw the enemy on the screen, required method for game
@@ -46,12 +42,10 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+Enemy.prototype.checkCollisions = function() {
 
+};
 
-// Now instantiate your objects.
 
 
 var Player = function(x, y) {
@@ -111,11 +105,9 @@ Player.prototype.handleInput = function(key) {
 };
 
 // Place all enemy objects in an array called allEnemies
-var allEnemies = [];
-for (var i = 0; i <= 3; i++) {
-    var enemySpeed = Math.floor(Math.random() * 5 + 1) * 75;
-    allEnemies.push(new Enemy(-60, 60 + 85 * i, enemySpeed));
-}
+
+var allEnemies = [new Enemy(),new Enemy(), new Enemy()];
+
 
 var player = new Player();
 
