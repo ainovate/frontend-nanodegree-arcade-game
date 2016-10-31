@@ -3,9 +3,7 @@
 
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
-    var x = randomPostion(-100, 0);
-    var y = randomPostion(50, 250);
-    var speed = randomPostion(1, 100);
+    
     this.x = -100; // Variables applied to each of our instances go here,
     this.y = 0; // we've provided one for you to get started
     this.speed = speed;
@@ -17,21 +15,30 @@ var Enemy = function(x, y, speed) {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-        this.x = this.x + this.speed * dt;
+    this.x = this.x + this.speed * dt;
 
-        if (this.x > 500) {
-            this.reset();
-        }
+    if (this.x > 500) {
+        this.reset();
+    }
+    var bugXLeftRange = this.x - 50;
+    var bugXRightRange = this.x + 50;
+    var bugYTopRange = this.y - 50;
+    var bugYBottomRange = this.y + 50;
+
+    if (player.x > bugXLeftRange && player.x < bugXRightRange && player.y > bugYTopRange && player.y < bugYBottomRange) {
+        player.resetPlayerPosition();
+    }
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
 };
 
 Enemy.prototype.reset = function() {
-    var x = randomPostion(-100, 0);
-    var y = randomPostion(50, 250);
-    this.x = x;
-    this.y = y;
+    this.col = -2;
+    this.row = getRandomIntInclusive(1, 3);
+    this.x = x * this.col;
+    this.y = y * this.row;
+    this.speed = getRandomIntInclusive(1, 6);
 };
 
 // Draw the enemy on the screen, required method for game
@@ -105,9 +112,11 @@ Player.prototype.handleInput = function(key) {
 
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [];
+for (var i = 0; i <= 3; i++) {
+    var enemySpeed = Math.floor(Math.random() * 5 + 1) * 75;
+    allEnemies.push(new Enemy(-60, 60 + 85 * i, enemySpeed));
+}
 
-
-// Place the player object in a variable called player
 var player = new Player();
 
 // This listens for key presses and sends the keys to your
