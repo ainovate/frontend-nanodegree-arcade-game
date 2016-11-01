@@ -1,15 +1,13 @@
 "use strict";
-
-
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
 
 
-	var firstY = [220, 140, 60];
+	var firstY = [220, 60, 140, 220, 140, 60];
 	var speeds = [50, 70, 100, 120, 150];
 
 	this.x = -100; // Variables applied to each of our instances go here,
-	this.y = firstY[Math.floor(Math.random() * 3)]; // we've provided one for you to get started
+	this.y = firstY[Math.floor(Math.random() * 6)]; // we've provided one for you to get started
 	this.speed = speeds[Math.floor(Math.random() * 5)];
 	// The image/sprite for our enemies, this uses
 	// a helper we've provided to easily load images
@@ -21,7 +19,7 @@ var Enemy = function(x, y, speed) {
 Enemy.prototype.update = function(dt) {
 	this.x = this.x + this.speed * dt;
 
-	if (this.x > 500) {
+	if (this.x > 505) {
 		this.x = 0;
 	}
 	this.checkCollisions();
@@ -47,13 +45,13 @@ Enemy.prototype.checkCollisions = function() {
 		y: player.y,
 		width: 50,
 		height: 50
-	}
+	};
 	var rect2 = {
 		x: this.x,
 		y: this.y,
 		width: 50,
 		height: 50
-	}
+	};
 
 	if (rect1.x < rect2.x + rect2.width &&
 		rect1.x + rect1.width > rect2.x &&
@@ -107,7 +105,7 @@ Player.prototype.handleInput = function(key) {
 			break;
 
 		case 'up':
-			if (this.y <= 87) {
+			if (this.y <= 65) {
 				this.y = 5;
 			} else {
 				this.y -= 83;
@@ -126,7 +124,7 @@ Player.prototype.handleInput = function(key) {
 
 // Place all enemy objects in an array called allEnemies
 
-var allEnemies = [new Enemy(), new Enemy(), new Enemy()];
+var allEnemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy()];
 
 
 var player = new Player();
