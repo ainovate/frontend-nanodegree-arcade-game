@@ -78,7 +78,29 @@ Player.prototype.reset = function() {
 	this.y = 405;
 };
 
-Player.prototype.update = function(dt) {
+Player.prototype.update = function() {
+
+	if (this.x >= 450 || this.x <= 0) {
+		this.x = 210;
+	}
+
+	if (this.y >= 430) {
+		this.y = 400;
+	}
+
+	if (this.y <= -3) {
+		this.score += 1;
+		this.reset();
+		this.life -= 1;
+	}
+
+	document.getElementById('score').innerHTML = "SCORE: " + this.score;
+	if (this.life === 0) {
+		player.reset();
+		document.getElementById('life').innerHTML = "YOU DIED!";
+	} else {
+		document.getElementById('life').innerHTML = "LIFE: " + this.life;
+	}
 
 };
 
@@ -122,11 +144,55 @@ Player.prototype.handleInput = function(key) {
 	}
 };
 
+var gemImages = ['images/Gem-Orange.png', 'images/Gem-Blue.png', 'images/Gem-Green.png'];
+var gemY = [220, 60, 140, 220, 140, 60];
+var Gem = function() {
+	this.gemX = [50, 150, 250, 350, 400];
+	this.gemImg = gemImages[Math.floor(Math.random() * 3)];
+	this.x = this.gemX[Math.floor(Math.random() * 5)];
+	this.y = gemY[Math.floor(Math.random() * 6)];
+};
+
+Gem.prototype.update = function() {
+	//this.checkCollisions();
+};
+
+Gem.prototype.render = function() {
+	ctx.drawImage(Resources.get(this.gemImg), this.x, this.y);
+};
+
+Gem.prototype.checkCollisions = function() {
+	// calculate the bounding box objects' value
+	var rect1 = {
+		x: player.x,
+		y: player.y,
+		width: 50,
+		height: 50
+	};
+	var rect2 = {
+		x: this.x,
+		y: this.y,
+		width: 50,
+		height: 50
+	};
+
+	if (rect1.x < rect2.x + rect2.width &&
+		rect1.x + rect1.width > rect2.x &&
+		rect1.y < rect2.y + rect2.height &&
+		rect1.height + rect1.y > rect2.y) {
+		this.gemImg = gemImages[Math.floor(Math.random() * 3)];
+		this.x = this.gemX[Math.floor(Math.random() * 5)];
+		this.y = gemY[Math.floor(Math.random() * 6)];
+		player.score += 1;
+	}
+	document.getElementById('score').innerHTML = "SCORE: " + player.score;
+};
+
 // Place all enemy objects in an array called allEnemies
 
 var allEnemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy()];
 
-
+var gem = new Gem();
 var player = new Player();
 
 // This listens for key presses and sends the keys to your
