@@ -92,7 +92,7 @@ Player.prototype.update = function() {
 
     document.getElementById('score').innerHTML = "SCORE: " + this.score;
     if (this.life === 0) {
-        player.reset();
+        this.reset();
         document.getElementById('life').innerHTML = "YOU DIED!";
     } else {
         document.getElementById('life').innerHTML = "LIFE: " + this.life;
